@@ -1,0 +1,11 @@
+Python 3.4.2 (default, Oct 19 2014, 13:31:11) 
+[GCC 4.9.1] on linux
+Type "copyright", "credits" or "license()" for more information.
+>>> ================================ RESTART ================================
+>>> 
+b'192.168.1.23\n192.168.1.186\n'
+--------------------------------------------------
+b'Nmap scan report for BrightBox.ee (192.168.1.1)\nNmap scan report for 192.168.1.23\nNmap scan report for 192.168.1.71\nNmap scan report for 192.168.1.128\nNmap scan report for 192.168.1.141\nNmap scan report for 192.168.1.185\nNmap scan report for 192.168.1.186\nNmap scan report for 192.168.1.221\nNmap scan report for 192.168.1.205\nNmap done: 256 IP addresses (9 hosts up) scanned in 3.22 seconds\n'
+--------------------------------------------------
+[b'', b'Starting Nmap 6.47 ( http://nmap.org ) at 2017-06-02 14:21 UTC', b'Nmap scan report for BrightBox.ee (192.168.1.1)', b'Host is up (0.0052s latency).', b'MAC Address: 72:3E:D7:8D:28:5D (Unknown)', b'Nmap scan report for 192.168.1.23', b'Host is up (0.020s latency).', b'MAC Address: B8:27:EB:C2:D1:4E (Raspberry Pi Foundation)', b'Nmap scan report for 192.168.1.71', b'Host is up (0.010s latency).', b'MAC Address: 64:66:B3:C2:F0:75 (Tp-link Technologies CO.)', b'Nmap scan report for 192.168.1.128', b'Host is up (0.12s latency).', b'MAC Address: 00:26:C6:34:73:08 (Intel Corporate)', b'Nmap scan report for 192.168.1.141', b'Host is up (0.023s latency).', b'MAC Address: A0:6F:AA:0C:70:B0 (Unknown)', b'Nmap scan report for 192.168.1.185', b'Host is up (0.17s latency).', b'MAC Address: 84:2E:27:D6:65:8F (Unknown)', b'Nmap scan report for 192.168.1.186', b'Host is up (0.0065s latency).', b'MAC Address: B8:27:EB:C2:E2:0C (Raspberry Pi Foundation)', b'Nmap scan report for 192.168.1.221', b'Host is up (0.091s latency).', b'MAC Address: 98:0C:A5:FC:CB:F9 (Unknown)', b'Nmap scan report for 192.168.1.205', b'Host is up.', b'Nmap done: 256 IP addresses (9 hosts up) scanned in 7.27 seconds']
+>>> 
