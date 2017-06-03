@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import datetime
+"""This Class hold our funcational variables"""
+
 
 __author__ = "Michael Oyibo"
 __copyright__ = "Copyright 2017, Open Computing Enterprise Course"
@@ -16,16 +17,16 @@ class Node(object):
         self.myIP = myIP
         self.myMAC = myMAC
         self.nodeList = nodeList
-        self.masterNode = ''
+        self.masterNode = []
 
-    def add_node(self):
+    def add_node(self, newNode):
         #Add newly added node
-        pass
+        self.nodeList.append(newNode)
 
 
-    def remove_node(self):
+    def remove_node(self, xnode):
         #Remove node from node that is no longer active
-        pass
+        self.nodeList.remove(xnode)
 
     def update_master_node(self, masterOctet):
         if self.myIP.split('.')[3] == str(masterOctet):
@@ -46,10 +47,22 @@ class Node(object):
         self.update_master_node(max(list(map(int, lastOctetOfPis))))
 
         # print("Highest IP is  {}".format(max(list(map(int, lastOctetOfPis)))))
-
+    @property    
     def getIPAddress(self):
         return self.myIP
-
+        
+    @property
     def getMACAddress(self):
         return self.myMAC
+
+    @property
+    def getCurrentHosts(self):
+        return self.nodeList
+
+    @property
+    def getMasterNode(self):
+        return self.masterNode
+
+
+# sudo nmap -sP 192.168.1.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'
 
