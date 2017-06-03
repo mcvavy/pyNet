@@ -25,12 +25,12 @@ def initialize():
     thisNode = Node(fetch_IP_address(), fetch_MAC_address(), scanHosts())
     print("This Node IP is {} and MAC is {}\n".format(thisNode.getIPAddress, thisNode.getMACAddress))
 
-    thisNode.fetch_master_node();
+    # thisNode.fetch_master_node();
 
     while(True):
         #Let's run two iterations
-        for i in range(1):
-            print("Running nmap Iteration: {}\n\n".format(+str(i)))
+        for i in range(2):
+            print("Running nmap Iteration: {}\n\n".format(str(i+1)))
             try:
 
                 print("Scanning for new hosts............\n")
@@ -46,13 +46,11 @@ def initialize():
             #Check if each host in the new list is in our current list
             for host in newHostScans:
                 if host not in thisNode.getCurrentHosts:
-                    print("Adding host with   {}".format(host[0]))
                     thisNode.add_node(host)
 
             """Ping all addresses on our list to check if they are alive or dead"""
             for host in thisNode.getCurrentHosts:
                 if command_executor(host[0]) == '':
-                    print("Removing host with {}".format(host[0]))
                     thisNode.remove_node(host)
 
             """Check for new master who's in town"""
@@ -61,10 +59,10 @@ def initialize():
             #Wait 1 mins before next scan
             time.sleep(5)
 
-            print("Current Master is {}".format(thisNode.getMasterNode))
-            print("Current live hosts are {}".format(thisNode.getCurrentHosts))
+            print("Current Master is Node with IP: {} ,  MAC: {}, Vendor: {}\n\n".format(thisNode.getMasterNode[0],thisNode.getMasterNode[1],thisNode.getMasterNode[2]))
+            print("Current live hosts are {}\n\n".format(thisNode.getCurrentHosts))
 
-def scanHosts(): #We will scan for hosts every 7 seconds
+def scanHosts(): #We will scan for hosts every 5 seconds
     """This function scans for hosts on the network"""
 
     nmap3 = subprocess.check_output("sudo nmap -sP 192.168.1.0/24", shell=True).decode('utf-8')
