@@ -17,7 +17,7 @@ Samba is used to connect your Raspberry pi to your local network so that way you
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Installation and setup information can be found here : [Setup Samba](https://www.youtube.com/watch?v=iQwWEsuRWUw)
 
-- __[WebIDE](https://learn.adafruit.com/webide/overview)__
+- ## [WebIDE](https://learn.adafruit.com/webide/overview)
 WebIDE is a Web Interface you can setup for your Raspberry PI to run and debug your python code running on your Raspberry Pi in real time.
 It is straight forward to setup via ssh or terminal on your Raspberry PI.
 
