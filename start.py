@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-import ptvsd
-ptvsd.enable_attach(secret='demo')
-
 """This is a Raspberry network scanner application"""
 
 import subprocess
