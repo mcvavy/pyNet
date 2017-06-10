@@ -1,6 +1,8 @@
 pyNet A Raspberry Pi Intelligent Network
 
+> The folder V1 contains a version of the pyNet which doesn't have an election algorithm such as contesting election but rather each node selects the leader based on the highest last octet of the IP addresses of the hosts on the network
 
+ 
 __### Development Dependencies__
 
 [nmap](https://nmap.org/)
