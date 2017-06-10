@@ -15,20 +15,23 @@ __GroupMembers__ = "['Michael', 'Andreas', 'Linda']"
 
 
 class Node(object):
-    def __init__(self, myIP, myMAC, nodeList):
+    '''This class holds our business variables related to a host'''
+
+    def __init__(self, myIP, myMAC, myBroadCastIP, nodeList):
         self.myIP = myIP
         self.myMAC = myMAC
+        self.broadCastIP = myBroadCastIP
         self.nodeList = nodeList
         self.masterNode = []
 
     def add_node(self, newNode):
-        #Add newly added node
+        '''Add newly added node'''
         print("Adding host with   {}\n".format(newNode[0]))
         self.nodeList.append(newNode)
 
 
     def remove_node(self, xnode):
-        #Remove node from node that is no longer active
+        '''Remove node from node that is no longer active'''
         print("Removing host with {}\n".format(xnode[0]))
         self.nodeList.remove(xnode)
 
@@ -37,9 +40,9 @@ class Node(object):
             self.masterNode = [self.myIP, self.myMAC.strip(), 'Raspberry Pi Foundation']
             print("My node is the master node {}\n".format(self.masterNode))
         else:
-            masterNode = list(filter(lambda x: x[0][0].split('.')[3] == str(masterOctet), self.nodeList))
-            self.masterNode = masterNode
-            print("Master node has changed to {} with MAC address {}\n".format(masterNode[0], masterNode[1]))
+            masterNode = list(filter(lambda x: x[0].split('.')[3] == str(masterOctet), self.nodeList))[0]
+            self.masterNode = list(masterNode)
+            print("Master node has changed to {} with MAC address {}\n".format(self.masterNode[0], self.masterNode[1]))
 
     def fetch_master_node(self):
         lastOctetOfPis = list(map(lambda x: x[0].split('.')[3], self.nodeList))
@@ -48,8 +51,7 @@ class Node(object):
         #Node selection for master happens here
         self.update_master_node(max(list(map(int, lastOctetOfPis))))
 
-
-    @property    
+    @property
     def getIPAddress(self):
         return self.myIP
 
@@ -59,12 +61,15 @@ class Node(object):
 
     @property
     def getCurrentHosts(self):
+        '''returns list of all host on the list'''
         return self.nodeList
 
     @property
     def getMasterNode(self):
+        '''returns the current master node'''
         return self.masterNode
 
-
-# sudo nmap -sP 192.168.1.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'
-
+    @property
+    def getBroadcastAddress(self):
+        '''returns the broadcast address'''
+        return self.broadCastIP

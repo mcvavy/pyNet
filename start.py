@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
+import ptvsd
+ptvsd.enable_attach(secret='demo')
+
 """This is a Raspberry network scanner application"""
 
-import os
-import shlex
 import subprocess
 import time
 import re
-from Node import *
+from Node import Node
+from listener import *
+import threading
+import logging
 
 
 __author__ = "Michael Oyibo"
@@ -17,54 +21,91 @@ __version__ = "1.0.1"
 __maintainer__ = "Michael Oyibo"
 __email__ = "wi13b051@technikum-wien.at"
 __status__ = "Development"
+__Group__ = "Database"
+__GroupMembers__ = "['Michael', 'Andreas', 'Linda']"
 
 
 
 def initialize():
     """This function initializes the application"""
-    thisNode = Node(fetch_IP_address(), fetch_MAC_address(), scanHosts())
+    thisNode = Node(fetch_IP_address(), fetch_MAC_address(), fetch_broadcast_address(), scanHosts())
     print("This Node IP is {} and MAC is {}\n".format(thisNode.getIPAddress, thisNode.getMACAddress))
 
+
+    # thisNode.fetch_master_node()
+    listener = Listener(thisNode)
+    begin_election_process(thisNode, listener)
+
+    
+    # print("The master node is {}".format(thisNode.getMasterNode))
+
+
+
+    scanner_thread = threading.Thread(target=network_scanner, args=(thisNode,listener))
+    listener_thread = threading.Thread(target=network_listener, args=(listener,))
+    scanner_thread.start()
+    listener_thread.start()
+
     # thisNode.fetch_master_node();
+    
+'''Thread to forever listen and send messages'''
+def network_listener(listener):
+    listener.listen_clients()
+    
 
-    while(True):
-        #Let's run two iterations
-        for i in range(2):
-            print("Running nmap Iteration: {}\n\n".format(str(i+1)))
-            try:
+'''Thread to forever loop scanning the network'''
+def network_scanner(thisNode, listener):
+    print("This Node's IP Address is: {} from inside scanner thread.".format(thisNode.getIPAddress))
+    print("This Node's BroadCast Address is: {} from inside scanner thread.".format(thisNode.getBroadcastAddress))
+    while True:
+        try:
+            print("Scanning for new hosts............\n")
+            newHostScans = scanHosts()
+        except subprocess.CalledProcessError as e:
+            print('nmam error')
+            time.sleep(60*5)
+            continue
 
-                print("Scanning for new hosts............\n")
-                newHostScans = scanHosts()
-            except subprocess.CalledProcessError as e:
-                print('nmam error')
-                time.sleep(60*5)
-                continue
 
 
+        """ Looping through the newly scanned hosts"""
+        #Check if each host in the new list is in our current list
+        for host in newHostScans:
+            if host not in thisNode.getCurrentHosts:
+                thisNode.add_node(host)
 
-            """ Looping through the newly scanned hosts"""
-            #Check if each host in the new list is in our current list
-            for host in newHostScans:
-                if host not in thisNode.getCurrentHosts:
-                    thisNode.add_node(host)
+        """Ping all addresses on our list to check if they are alive or dead"""
+        for host in thisNode.getCurrentHosts:
+            if command_executor(host[0]) == '':
+                thisNode.remove_node(host)
 
-            """Ping all addresses on our list to check if they are alive or dead"""
-            for host in thisNode.getCurrentHosts:
-                if command_executor(host[0]) == '':
-                    thisNode.remove_node(host)
+        '''Check if master is alive/dead then raise election requests'''
+        if not thisNode.getMasterNode:
+            begin_election_process(thisNode, listener)
+        else:
+            if command_executor(thisNode.getMasterNode[0]) == '':
+            #We kickoff election context
+                begin_election_process(thisNode, listener)
 
-            """Check for new master who's in town"""
-            thisNode.fetch_master_node()
+        time.sleep(5)
 
-            #Wait 1 mins before next scan
-            time.sleep(5)
-
+        if thisNode.getMasterNode:
             print("Current Master is Node with IP: {} ,  MAC: {}, Vendor: {}\n\n".format(thisNode.getMasterNode[0],thisNode.getMasterNode[1],thisNode.getMasterNode[2]))
-            print("Current live hosts are {}\n\n".format(thisNode.getCurrentHosts))
+        print("Current live hosts are {}\n\n".format(thisNode.getCurrentHosts))
 
+def begin_election_process(thisNode, listener):
+    #We kickoff election context
+    '''The Bully Election Algorithm begins'''
+    contest_election_thread = threading.Thread(target=contest_election, args=(thisNode,listener))
+    contest_election_thread.start()
+
+def contest_election(thisNode, listener):
+    for host in list(filter(lambda x: int(x[0].split('.')[3]) > int(thisNode.getIPAddress.split('.')[3]), thisNode.getCurrentHosts)):
+        send_request_thread = threading.Thread(target=listener.send_contest_request, args=("election", (host[0], 4242)))
+        send_request_thread.start()
+    
 def scanHosts(): #We will scan for hosts every 5 seconds
     """This function scans for hosts on the network"""
-
     nmap3 = subprocess.check_output("sudo nmap -sP 192.168.1.0/24", shell=True).decode('utf-8')
     matches = re.findall("([\d]+.[\d]+.[\d]+.[\d]+)\nHost is up .*.\nMAC Address: ([0-9A-F:.]*) \((.*)\)\n",nmap3)
     listOfLiveHost = list(filter(lambda x: x[1].startswith('B8:27:EB'), matches))
@@ -79,7 +120,9 @@ def fetch_IP_address():
 def command_executor(ipAddress):
     return subprocess.check_output("nmap "+ ipAddress + " | awk '/Host is up/{ print $1, $2, $3 }'", shell=True).decode('utf-8')
 
+def fetch_broadcast_address():
+    return subprocess.check_output("ifconfig | awk '/Bcast:/ {split($3,arr,\":\"); print arr[2]}'", shell=True).decode('utf-8')
 
-    
+
 if __name__== '__main__':
     initialize()
