@@ -24,7 +24,7 @@ It is straight forward to setup via ssh or terminal on your Raspberry PI.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WebIDE installation and setup can be found here : [Setup webIDE](https://learn.adafruit.com/webide/installation)
 
 
-*__### Resources & References:__*
+*__##Resources & References:__*
 - [Find Raspberry PI address on local network](https://raspberrypi.stackexchange.com/questions/13936/find-raspberry-pi-address-on-local-network/31324)
 - [Quick awk tutorial](https://www.youtube.com/watch?v=az6vd0tGhJI&t=402s) & [More AWK](https://www.youtube.com/watch?v=fCw-xf31M_s&t=202s)
 - [Python threading/Multi Tasking](https://www.youtube.com/watch?v=EvbA3qVMGaw&t=166s)
