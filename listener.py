@@ -10,14 +10,13 @@ class Listener():
     '''This class is responsible for sending and recieving messages'''
 
     def __init__(self, thisNode):
-        logging.info('Initializing Broker')
+        logging.info('Initializing listener')
         self.thisNode = thisNode
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.bind((self.thisNode.getIPAddress, 4242))
-        # self.clients_list = []
 
-    def talkToClient(self, ip):
-        logging.info("Sending 'ok' to %s", ip)
+    def respond_to_client(self, ip):
+        logging.info("Responding with 'ok' to %s", ip)
         self.sock.sendto("ok".encode("utf-8"), ip)
 
     def listen_clients(self):
@@ -26,19 +25,13 @@ class Listener():
             msg, client = self.sock.recvfrom(1024)
             message = msg.decode("utf-8")
             if message == 'election':
-                if message == 'master':
-                    print('Broadcast message from : {}\n\n'.format(client))
                 logging.info('Received data from client %s: %s', client, msg)
                 print('Received data from client %s: %s', client, msg)
-                send_thread = threading.Thread(target=self.talkToClient, args=(client,))
+                send_thread = threading.Thread(target=self.respond_to_client, args=(client,))
                 send_thread.start()
 
-                print('About contesting an election..........\n\n')
                 #Kicks off election to higher hosts
                 contestableHosts = list(filter(lambda x: int(x[0].split('.')[3]) > int(self.thisNode.getIPAddress.split('.')[3]), self.thisNode.getCurrentHosts))
-
-                print('contestableHosts nodes are: {}'.format(contestableHosts))
-
 
                 if len(contestableHosts) >= 1:
                     for host in contestableHosts:
@@ -50,21 +43,15 @@ class Listener():
                     for host in self.thisNode.getCurrentHosts:
                         self.sock.sendto("master".encode("utf-8"), client)
 
-                    # self.broadcast_master()
-
             if message == 'master':
-                print("Broadcast message recieved: {} from {}".format(message, client))
                 logging.info("Master Node with IP Address: % has been found\n", client)
-                print("I think the master node is {}".format(client))
                 self.thisNode.update_master_node(client[0].split('.')[3])
 
     def broadcast_master(self, message, host):
         '''Broadcast the master to all nodes'''
-        # self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        # self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        # self.sock.sendto("master".encode("utf-8"), (self.thisNode.getBroadcastAddress, 4242))
         self.sock.sendto(message, host)
 
 
     def send_contest_request(self, message, address):
+        '''Broadcast the master to all nodes'''
         self.sock.sendto(message.encode("utf-8"), address)

@@ -2,6 +2,7 @@
 
 """This Class hold our funcational variables"""
 
+import logging
 
 __author__ = "Michael Oyibo"
 __copyright__ = "Copyright 2017, Open Computing Enterprise Course"
@@ -18,6 +19,7 @@ class Node(object):
     '''This class holds our business variables related to a host'''
 
     def __init__(self, myIP, myMAC, myBroadCastIP, nodeList):
+        logging.info('Starting application........')
         self.myIP = myIP
         self.myMAC = myMAC
         self.broadCastIP = myBroadCastIP

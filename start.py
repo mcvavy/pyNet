@@ -26,10 +26,9 @@ __GroupMembers__ = "['Michael', 'Andreas', 'Linda']"
 def initialize():
     """This function initializes the application"""
     thisNode = Node(fetch_IP_address(), fetch_MAC_address(), fetch_broadcast_address(), scanHosts())
-    print("This Node IP is {} and MAC is {}\n".format(thisNode.getIPAddress, thisNode.getMACAddress))
+    print("My IP is {} and MAC is {}\n".format(thisNode.getIPAddress, thisNode.getMACAddress))
 
 
-    # thisNode.fetch_master_node()
     listener = Listener(thisNode)
     begin_election_process(thisNode, listener)
 
@@ -42,12 +41,9 @@ def initialize():
 '''Thread to forever listen and send messages'''
 def network_listener(listener):
     listener.listen_clients()
-    
 
 '''Thread to forever loop scanning the network'''
 def network_scanner(thisNode, listener):
-    print("This Node's IP Address is: {} from inside scanner thread.".format(thisNode.getIPAddress))
-    print("This Node's BroadCast Address is: {} from inside scanner thread.".format(thisNode.getBroadcastAddress))
     while True:
         try:
             print("Scanning for new hosts............\n")
