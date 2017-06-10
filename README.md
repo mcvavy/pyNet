@@ -12,7 +12,7 @@ Follow this step to install nmap : [How to install nmap](https://www.raspberrypi
 
 __### Optional Depencies and tools__
 
-- __##Samba__
+- ## Samba
 Samba is used to connect your Raspberry pi to your local network so that way you don't have to issue ssh command or putty each time you want to access your file. It helps you share file between you Raspberry Pi and your PC and use any editor of your choice to develop your python app while running your code on your Pi.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Installation and setup information can be found here : [Setup Samba](https://www.youtube.com/watch?v=iQwWEsuRWUw)
@@ -24,7 +24,7 @@ It is straight forward to setup via ssh or terminal on your Raspberry PI.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WebIDE installation and setup can be found here : [Setup webIDE](https://learn.adafruit.com/webide/installation)
 
 
-*##__Resources & References:__*
+- ## Resources & References:
 - [Find Raspberry PI address on local network](https://raspberrypi.stackexchange.com/questions/13936/find-raspberry-pi-address-on-local-network/31324)
 - [Quick awk tutorial](https://www.youtube.com/watch?v=az6vd0tGhJI&t=402s) & [More AWK](https://www.youtube.com/watch?v=fCw-xf31M_s&t=202s)
 - [Python threading/Multi Tasking](https://www.youtube.com/watch?v=EvbA3qVMGaw&t=166s)
