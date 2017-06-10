@@ -1,2 +1,1 @@
-# pyNet
-##Raspberry Pi Intelligent Network
+# pyNet A Raspberry Pi Intelligent Network
