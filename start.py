@@ -33,17 +33,11 @@ def initialize():
     listener = Listener(thisNode)
     begin_election_process(thisNode, listener)
 
-    
-    # print("The master node is {}".format(thisNode.getMasterNode))
-
-
 
     scanner_thread = threading.Thread(target=network_scanner, args=(thisNode,listener))
     listener_thread = threading.Thread(target=network_listener, args=(listener,))
     scanner_thread.start()
     listener_thread.start()
-
-    # thisNode.fetch_master_node();
     
 '''Thread to forever listen and send messages'''
 def network_listener(listener):
@@ -97,9 +91,21 @@ def begin_election_process(thisNode, listener):
     contest_election_thread.start()
 
 def contest_election(thisNode, listener):
-    for host in list(filter(lambda x: int(x[0].split('.')[3]) > int(thisNode.getIPAddress.split('.')[3]), thisNode.getCurrentHosts)):
-        send_request_thread = threading.Thread(target=listener.send_contest_request, args=("election", (host[0], 4242)))
-        send_request_thread.start()
+
+    contestableHosts = list(filter(lambda x: int(x[0].split('.')[3]) > int(thisNode.getIPAddress.split('.')[3]), thisNode.getCurrentHosts))
+
+    print('contestableHosts nodes are: {}'.format(contestableHosts))
+
+    if len(contestableHosts) >= 1:
+        for host in contestableHosts:
+            propagate_election_thread = threading.Thread(target=listener.send_contest_request, args=("election", (host[0], 4242)))
+            propagate_election_thread.start()
+    else:
+        #update master and broadcast
+        thisNode.update_master_node(thisNode.getIPAddress.split('.')[3])
+        for host in thisNode.getCurrentHosts:
+            broadcast_master_to_all = threading.Thread(target=listener.broadcast_master, args=("master".encode("utf-8"), (host[0],4242)))
+            broadcast_master_to_all.start()
     
 def scanHosts(): #We will scan for hosts every 5 seconds
     """This function scans for hosts on the network"""
