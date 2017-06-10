@@ -3,7 +3,7 @@ pyNet A Raspberry Pi Intelligent Network
 > The folder V1 contains a version of the pyNet which doesn't have an election algorithm such as contesting election but rather each node selects the leader based on the highest last octet of the IP addresses of the hosts on the network
 
 
-__### Development Dependencies__
+# Development Dependencies
 
 [nmap](https://nmap.org/)
 
@@ -28,6 +28,7 @@ It is straight forward to setup via ssh or terminal on your Raspberry PI.
 - [Find Raspberry PI address on local network](https://raspberrypi.stackexchange.com/questions/13936/find-raspberry-pi-address-on-local-network/31324)
 - [Quick awk tutorial](https://www.youtube.com/watch?v=az6vd0tGhJI&t=402s) & [More AWK](https://www.youtube.com/watch?v=fCw-xf31M_s&t=202s)
 - [Python threading/Multi Tasking](https://www.youtube.com/watch?v=EvbA3qVMGaw&t=166s)
+- [Python subprocess: check_output](https://www.youtube.com/watch?v=jq3uTixxrns)
 
 
 
