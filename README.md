@@ -1,5 +1,7 @@
 pyNet A Raspberry Pi Intelligent Network
 
+_This application is an open source project. Feel free to download, share, remix, as you like without restriction, but references and ackowledgement be given to the mainter and group members working on the project. Also feel free to fork, modify, enhance, and make pull requests._
+
 > The folder V1 contains a version of the pyNet which doesn't have an election algorithm such as contesting election but rather each node selects the leader based on the highest last octet of the IP addresses of the hosts on the network
 
 
