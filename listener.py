@@ -6,6 +6,15 @@ import threading
 import socket
 import logging
 
+
+__credits__ = []
+__version__ = "1.0.1"
+__maintainer__ = "Michael Oyibo"
+__email__ = "wi13b051@technikum-wien.at"
+__status__ = "Development"
+__Group__ = "Database"
+__GroupMembers__ = "['Michael', 'Andreas', 'Linda']"
+
 class Listener():
     '''This class is responsible for sending and recieving messages'''
 
