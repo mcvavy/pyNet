@@ -17,7 +17,7 @@ __maintainer__ = "Michael Oyibo"
 __email__ = "wi13b051@technikum-wien.at"
 __status__ = "Development"
 __Group__ = "Database"
-__GroupMembers__ = "['Michael', 'Andreas', 'Linda']"
+__GroupMembers__ = "['Michael', 'Andreas Wenzl', 'Linda']"
 
 
 
@@ -71,6 +71,9 @@ def network_scanner(thisNode, listener):
             if command_executor(thisNode.getMasterNode[0]) == '':
             #We kickoff election context
                 begin_election_process(thisNode, listener)
+
+        if command_executor(thisNode.getIPAddress) == '':
+            thisNode.update_ip_address(fetch_IP_address())
 
         time.sleep(5)
 

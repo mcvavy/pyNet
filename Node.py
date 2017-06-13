@@ -5,8 +5,8 @@
 import logging
 
 __credits__ = [""]
-__version__ = "2.0.0"
-__maintainer__ = "Michael Oyibo"
+__version__ = "2.0.1"
+__maintainer__ = "Michael Oyibo, Andreas Wenzl"
 __email__ = "wi13b051@technikum-wien.at"
 __status__ = "Development"
 __Group__ = "Database"
@@ -31,6 +31,9 @@ class Node(object):
         print("Adding host with {}\n".format(newNode[0]))
         self.nodeList.append(newNode)
 
+    def update_ip_address(self, ipAddress):
+        'Updating ip address in case it changes while the programm is running'
+        self.myIP = ipAddress
 
     def remove_node(self, xnode):
         '''Remove node from node that is no longer active'''
