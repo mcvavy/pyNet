@@ -36,7 +36,11 @@ It is straight forward to setup via ssh or terminal on your Raspberry PI.
 
 ## How to run this application:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Update your raspbian or linux distro
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Install nmap following the above instruction
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Make sure you have python 3 installed
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Deploy to as many Raspberry Pis as you want
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - The application entry point is start.py e.g python3 start.py on a command line
