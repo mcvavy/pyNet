@@ -10,7 +10,7 @@ __maintainer__ = "Michael Oyibo"
 __email__ = "wi13b051@technikum-wien.at"
 __status__ = "Development"
 __Group__ = "Database"
-__GroupMembers__ = "['Michael', 'Andreas', 'Linda']"
+__GroupMembers__ = "['Michael', 'Andreas Wenzl', 'Linda']"
 
 
 class Node(object):
