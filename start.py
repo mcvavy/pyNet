@@ -74,6 +74,7 @@ def network_scanner(thisNode, listener):
 
         if command_executor(thisNode.getIPAddress) == '':
             thisNode.update_ip_address(fetch_IP_address())
+            begin_election_process(thisNode, listener)
 
         time.sleep(5)
 
