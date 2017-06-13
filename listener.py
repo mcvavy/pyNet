@@ -26,7 +26,7 @@ class Listener():
             message = msg.decode("utf-8")
             if message == 'election':
                 logging.info('Received data from client %s: %s', client, msg)
-                print('Received data from client %s: %s', client, msg)
+                print('Election request from {}\n\n'.format(client))
                 send_thread = threading.Thread(target=self.respond_to_client, args=(client,))
                 send_thread.start()
 

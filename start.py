@@ -88,9 +88,10 @@ def begin_election_process(thisNode, listener):
 
 def contest_election(thisNode, listener):
 
+    #A list of contestable nodes in the network 
     contestableHosts = list(filter(lambda x: int(x[0].split('.')[3]) > int(thisNode.getIPAddress.split('.')[3]), thisNode.getCurrentHosts))
 
-    print('contestableHosts nodes are: {}'.format(contestableHosts))
+    # print('contestableHosts nodes are: {}'.format(contestableHosts))
 
     if len(contestableHosts) >= 1:
         for host in contestableHosts:

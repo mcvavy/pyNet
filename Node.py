@@ -28,12 +28,16 @@ class Node(object):
 
     def add_node(self, newNode):
         '''Add newly added node'''
-        print("Adding host with   {}\n".format(newNode[0]))
+        print("New host(s) detected....   {}\n".format(newNode[0]))
+        print("**************************************************************\n")
+        print("Adding host with {}\n".format(newNode[0]))
         self.nodeList.append(newNode)
 
 
     def remove_node(self, xnode):
         '''Remove node from node that is no longer active'''
+        print("Dead/faulty host detected\n")
+        print("**************************************************************\n")
         print("Removing host with {}\n".format(xnode[0]))
         self.nodeList.remove(xnode)
 
