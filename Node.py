@@ -4,8 +4,8 @@
 
 import logging
 
-__credits__ = []
-__version__ = "1.0.1"
+__credits__ = [""]
+__version__ = "2.0.0"
 __maintainer__ = "Michael Oyibo"
 __email__ = "wi13b051@technikum-wien.at"
 __status__ = "Development"

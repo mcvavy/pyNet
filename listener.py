@@ -7,7 +7,7 @@ import socket
 import logging
 
 
-__credits__ = []
+__credits__ = [""]
 __version__ = "1.0.1"
 __maintainer__ = "Michael Oyibo"
 __email__ = "wi13b051@technikum-wien.at"
@@ -28,7 +28,7 @@ class Listener():
         logging.info("Responding with 'ok' to %s", ip)
         self.sock.sendto("ok".encode("utf-8"), ip)
 
-    def listen_clients(self):
+    def client_listener(self):
         '''This listens for imcoming messages'''
         while True:
             msg, client = self.sock.recvfrom(1024)

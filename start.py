@@ -11,8 +11,8 @@ import threading
 import logging
 
 
-__credits__ = []
-__version__ = "1.0.1"
+__credits__ = [""]
+__version__ = "2.0.0"
 __maintainer__ = "Michael Oyibo"
 __email__ = "wi13b051@technikum-wien.at"
 __status__ = "Development"
@@ -38,7 +38,7 @@ def initialize():
     
 '''Thread to forever listen and send messages'''
 def network_listener(listener):
-    listener.listen_clients()
+    listener.client_listener()
 
 '''Thread to forever loop scanning the network'''
 def network_scanner(thisNode, listener):
