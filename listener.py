@@ -21,16 +21,20 @@ class Listener():
     def __init__(self, thisNode):
         logging.info('Initializing listener')
         self.thisNode = thisNode
+        #Using a UDP socket for catching incoming packets from hosts
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        #Binding the socket to a port
         self.sock.bind((self.thisNode.getIPAddress, 4242))
 
     def respond_to_client(self, ip):
+        #Sending response
         logging.info("Responding with 'ok' to %s", ip)
         self.sock.sendto("ok".encode("utf-8"), ip)
 
     def client_listener(self):
         '''This listens for imcoming messages'''
         while True:
+            #Receiving UDP messages with a buffer size of 1024 bytes
             msg, client = self.sock.recvfrom(1024)
             message = msg.decode("utf-8")
             if message == 'election':
@@ -42,6 +46,7 @@ class Listener():
                 #Kicks off election to higher hosts
                 contestableHosts = list(filter(lambda x: int(x[0].split('.')[3]) > int(self.thisNode.getIPAddress.split('.')[3]), self.thisNode.getCurrentHosts))
 
+                #Sending a request for election when more than one host apply for master
                 if len(contestableHosts) >= 1:
                     for host in contestableHosts:
                         propagate_election_thread = threading.Thread(target=self.send_contest_request, args=("election", (host[0], 4242)))
