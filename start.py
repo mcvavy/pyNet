@@ -23,14 +23,18 @@ __GroupMembers__ = "['Michael', 'Andreas Wenzl', 'Linda']"
 
 def initialize():
     """This function initializes the application"""
+
+    #Gather information about the current device and display it
     thisNode = Node(fetch_IP_address(), fetch_MAC_address(), fetch_broadcast_address(), scanHosts())
     print("My IP is {} and MAC is {}\n".format(thisNode.getIPAddress, thisNode.getMACAddress))
 
-
+    #Register this device as a listener for incoming messages
     listener = Listener(thisNode)
+
+    #Election of a master node
     begin_election_process(thisNode, listener)
 
-
+    #Initialises threads for scanning devices and messaging
     scanner_thread = threading.Thread(target=network_scanner, args=(thisNode,listener))
     listener_thread = threading.Thread(target=network_listener, args=(listener,))
     scanner_thread.start()
@@ -95,17 +99,20 @@ def contest_election(thisNode, listener):
 
     # print('contestableHosts nodes are: {}'.format(contestableHosts))
 
+    #Sending a request for election when more than one host is connected
     if len(contestableHosts) >= 1:
         for host in contestableHosts:
             propagate_election_thread = threading.Thread(target=listener.send_contest_request, args=("election", (host[0], 4242)))
             propagate_election_thread.start()
     else:
-        #update master and broadcast
+        #update master and broadcast information when only one host is connected
         thisNode.update_master_node(thisNode.getIPAddress.split('.')[3])
         for host in thisNode.getCurrentHosts:
             broadcast_master_to_all = threading.Thread(target=listener.broadcast_master, args=("master".encode("utf-8"), (host[0],4242)))
             broadcast_master_to_all.start()
-    
+
+
+#The following methodes use shell commands including the "Network Mapper" to gather information about the device
 def scanHosts(): #We will scan for hosts every 5 seconds
     """This function scans for hosts on the network"""
     nmap3 = subprocess.check_output("sudo nmap -sP 192.168.1.0/24", shell=True).decode('utf-8')
