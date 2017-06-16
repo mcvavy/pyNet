@@ -43,10 +43,13 @@ class Node(object):
         self.nodeList.remove(xnode)
 
     def update_master_node(self, masterOctet):
+        '''Update master node'''
+        #Checks if the current host is the master
         if self.myIP.split('.')[3] == str(masterOctet):
             self.masterNode = [self.myIP, self.myMAC.strip(), 'Raspberry Pi Foundation']
             print("My node is the master node {}\n".format(self.masterNode))
         else:
+            #Filters the list of hosts which match with the master string
             masterNode = list(filter(lambda x: x[0].split('.')[3] == str(masterOctet), self.nodeList))[0]
             self.masterNode = list(masterNode)
             print("Master node has changed to {} with MAC address {}\n".format(self.masterNode[0], self.masterNode[1]))
@@ -56,6 +59,7 @@ class Node(object):
         lastOctetOfPis.append(self.myIP.split('.')[3])
 
         #Node selection for master happens here
+        #Selects the host with the maximum value from the list of hosts
         self.update_master_node(max(list(map(int, lastOctetOfPis))))
 
     @property
