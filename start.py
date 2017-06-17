@@ -37,6 +37,8 @@ def initialize():
     #Initialises threads for scanning devices and messaging
     scanner_thread = threading.Thread(target=network_scanner, args=(thisNode,listener))
     listener_thread = threading.Thread(target=network_listener, args=(listener,))
+
+    #start scanning and listener threads
     scanner_thread.start()
     listener_thread.start()
     

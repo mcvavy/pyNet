@@ -64,10 +64,12 @@ class Node(object):
 
     @property
     def getIPAddress(self):
+        '''returns the current IP Address'''
         return self.myIP
 
     @property
     def getMACAddress(self):
+        '''returns the current MAC Address'''
         return self.myMAC
 
     @property
