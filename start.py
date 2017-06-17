@@ -41,13 +41,13 @@ def initialize():
     #start scanning and listener threads
     scanner_thread.start()
     listener_thread.start()
-    
-'''Thread to forever listen and send messages'''
+
 def network_listener(listener):
+    '''Thread to forever listen and send messages'''
     listener.client_listener()
 
-'''Thread to forever loop scanning the network'''
 def network_scanner(thisNode, listener):
+    '''Thread to forever loop scanning the network'''
     while True:
         try:
             print("Scanning for new hosts............\n")
@@ -75,7 +75,7 @@ def network_scanner(thisNode, listener):
             begin_election_process(thisNode, listener)
         else:
             if command_executor(thisNode.getMasterNode[0]) == '':
-            #We kickoff election context
+            #We kickoff election contest
                 begin_election_process(thisNode, listener)
 
         if command_executor(thisNode.getIPAddress) == '':
@@ -89,32 +89,31 @@ def network_scanner(thisNode, listener):
         print("Current live hosts are {}\n\n".format(thisNode.getCurrentHosts))
 
 def begin_election_process(thisNode, listener):
-    #We kickoff election context
     '''The Bully Election Algorithm begins'''
+    #We kickoff election contest
     contest_election_thread = threading.Thread(target=contest_election, args=(thisNode,listener))
     contest_election_thread.start()
 
 def contest_election(thisNode, listener):
-
-    #A list of contestable nodes in the network 
+    #A list of contestable nodes in the network i.e Nodes with higher last IP octet on the network
     contestableHosts = list(filter(lambda x: int(x[0].split('.')[3]) > int(thisNode.getIPAddress.split('.')[3]), thisNode.getCurrentHosts))
 
-    # print('contestableHosts nodes are: {}'.format(contestableHosts))
+    process_election(contestableHosts, listener, thisNode)
 
-    #Sending a request for election when more than one host is connected
+def process_election(contestableHosts, listener, thisNode):
+    #Sending a request for election if at least one node with higher last octet is available
     if len(contestableHosts) >= 1:
         for host in contestableHosts:
             propagate_election_thread = threading.Thread(target=listener.send_contest_request, args=("election", (host[0], 4242)))
             propagate_election_thread.start()
     else:
-        #update master and broadcast information when only one host is connected
+        #update master and broadcast information no other node with higher last IP octet or is the only available node
         thisNode.update_master_node(thisNode.getIPAddress.split('.')[3])
         for host in thisNode.getCurrentHosts:
             broadcast_master_to_all = threading.Thread(target=listener.broadcast_master, args=("master".encode("utf-8"), (host[0],4242)))
             broadcast_master_to_all.start()
 
 
-#The following methodes use shell commands including the "Network Mapper" to gather information about the device
 def scanHosts(): #We will scan for hosts every 5 seconds
     """This function scans for hosts on the network"""
     nmap3 = subprocess.check_output("sudo nmap -sP 192.168.1.0/24", shell=True).decode('utf-8')
@@ -123,15 +122,19 @@ def scanHosts(): #We will scan for hosts every 5 seconds
     return listOfLiveHost
 
 def fetch_MAC_address():
+    """This function returns MAC address"""
     return subprocess.check_output("ifconfig | awk '/eth0/ { print toupper($5) }'", shell=True).decode('utf-8')
 
 def fetch_IP_address():
+    """This function returns IP address"""
     return re.findall("([\d]+.[\d]+.[\d]+.[\d]+)",subprocess.check_output("hostname -I", shell=True).decode('utf-8'))[0]
 
 def command_executor(ipAddress):
+    """This function pings a node to check if dead or alive"""
     return subprocess.check_output("nmap "+ ipAddress + " | awk '/Host is up/{ print $1, $2, $3 }'", shell=True).decode('utf-8')
 
 def fetch_broadcast_address():
+    """This function fetches the broadcast address of the current host"""
     return subprocess.check_output("ifconfig | awk '/Bcast:/ {split($3,arr,\":\"); print arr[2]}'", shell=True).decode('utf-8')
 
 

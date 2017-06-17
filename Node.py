@@ -15,7 +15,6 @@ __GroupMembers__ = "['Michael', 'Andreas Wenzl', 'Linda']"
 
 class Node(object):
     '''This class holds our business variables related to a host'''
-
     def __init__(self, myIP, myMAC, myBroadCastIP, nodeList):
         logging.info('Starting application........')
         self.myIP = myIP
@@ -32,7 +31,7 @@ class Node(object):
         self.nodeList.append(newNode)
 
     def update_ip_address(self, ipAddress):
-        'Updating ip address in case it changes while the programm is running'
+        '''Updating ip address in case it changes while the programm is running'''
         self.myIP = ipAddress
 
     def remove_node(self, xnode):
@@ -49,18 +48,10 @@ class Node(object):
             self.masterNode = [self.myIP, self.myMAC.strip(), 'Raspberry Pi Foundation']
             print("My node is the master node {}\n".format(self.masterNode))
         else:
-            #Filters the list of hosts which match with the master string
+            #Filters the list of hosts which matches the last octet of the IP address of the master
             masterNode = list(filter(lambda x: x[0].split('.')[3] == str(masterOctet), self.nodeList))[0]
             self.masterNode = list(masterNode)
             print("Master node has changed to {} with MAC address {}\n".format(self.masterNode[0], self.masterNode[1]))
-
-    def fetch_master_node(self):
-        lastOctetOfPis = list(map(lambda x: x[0].split('.')[3], self.nodeList))
-        lastOctetOfPis.append(self.myIP.split('.')[3])
-
-        #Node selection for master happens here
-        #Selects the host with the maximum value from the list of hosts
-        self.update_master_node(max(list(map(int, lastOctetOfPis))))
 
     @property
     def getIPAddress(self):
