@@ -21,10 +21,15 @@ class Listener():
     def __init__(self, thisNode):
         logging.info('Initializing listener')
         self.thisNode = thisNode
-        #Using a UDP socket for catching incoming packets from hosts
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        #Binding the socket to a port
-        self.sock.bind((self.thisNode.getIPAddress, 4242))
+        self.MCAST_PORT = 4242
+        self.MCAST_GRP = '192.168.1.255'
+
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+        self.sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        self.sock.bind(('', self.MCAST_PORT))
 
     def respond_to_client(self, ip):
         #Sending response
@@ -54,16 +59,16 @@ class Listener():
                 else:
                     #update master and broadcast
                     self.thisNode.update_master_node(self.thisNode.getIPAddress.split('.')[3])
-                    for host in self.thisNode.getCurrentHosts:
-                        self.sock.sendto("master".encode("utf-8"), client)
+                    self.sock.sendto("master".encode("utf-8"), (self.MCAST_GRP,self.MCAST_PORT))
 
             if message == 'master':
                 logging.info("Master Node with IP Address: % has been found\n", client)
                 self.thisNode.update_master_node(client[0].split('.')[3])
 
-    def broadcast_master(self, message, host):
+    def broadcast_master(self, message):
         '''Broadcast the master to all nodes'''
-        self.sock.sendto(message, host)
+        self.sock.sendto(message, (self.MCAST_GRP,self.MCAST_PORT))
+        # self.sock.sendto(message, host)
 
 
     def send_contest_request(self, message, address):

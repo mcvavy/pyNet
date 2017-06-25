@@ -10,8 +10,6 @@ from listener import *
 import threading
 import logging
 
-subprocess.call("/home/pi/pyNet/install.sh", shell=True)
-
 __credits__ = [""]
 __version__ = "2.0.0"
 __maintainer__ = "Michael Oyibo"
@@ -110,9 +108,9 @@ def process_election(contestableHosts, listener, thisNode):
     else:
         #update master and broadcast information no other node with higher last IP octet or is the only available node
         thisNode.update_master_node(thisNode.getIPAddress.split('.')[3])
-        for host in thisNode.getCurrentHosts:
-            broadcast_master_to_all = threading.Thread(target=listener.broadcast_master, args=("master".encode("utf-8"), (host[0],4242)))
-            broadcast_master_to_all.start()
+
+        broadcast_master_to_all = threading.Thread(target=listener.broadcast_master, args=("master".encode("utf-8"),))
+        broadcast_master_to_all.start()
 
 
 def scanHosts(): #We will scan for hosts every 5 seconds
@@ -140,4 +138,6 @@ def fetch_broadcast_address():
 
 
 if __name__== '__main__':
+    subprocess.call("(sudo apt-get update -y)", shell=True)
+    subprocess.call("(sudo apt-get install nmap -y)", shell=True)
     initialize()
