@@ -138,6 +138,7 @@ def fetch_broadcast_address():
 
 
 if __name__== '__main__':
+    
     if subprocess.check_output("nmap | awk '/nmap -v -A/{print $4}'", shell=True).decode('utf-8') == '':
         print("Updating packages and installing nmap..........\n\n")
         subprocess.call("(sudo apt-get update -y)", shell=True)
