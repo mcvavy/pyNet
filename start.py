@@ -10,8 +10,6 @@ from listener import *
 import threading
 import logging
 
-subprocess.call("/home/pi/pyNet/install.sh", shell=True)
-
 __credits__ = [""]
 __version__ = "2.0.0"
 __maintainer__ = "Michael Oyibo"
