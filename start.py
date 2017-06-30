@@ -115,7 +115,7 @@ def process_election(contestableHosts, listener, thisNode):
 
 def scanHosts(): #We will scan for hosts every 5 seconds
     """This function scans for hosts on the network"""
-    nmap3 = subprocess.check_output("sudo nmap -sP 192.168.0.0/24", shell=True).decode('utf-8')
+    nmap3 = subprocess.check_output("sudo nmap -sP 192.168.0.100-199", shell=True).decode('utf-8')
     matches = re.findall("([\d]+.[\d]+.[\d]+.[\d]+)\nHost is up .*.\nMAC Address: ([0-9A-F:.]*) \((.*)\)\n",nmap3)
     listOfLiveHost = list(filter(lambda x: x[1].startswith('B8:27:EB'), matches))
     return listOfLiveHost
